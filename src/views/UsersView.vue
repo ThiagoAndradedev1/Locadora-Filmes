@@ -64,9 +64,11 @@
                 </button>
               </td>
               <td class="border px-4 py-2">
-                <button @click="editUser()" class="bg-green-500 text-white py-1 px-2 rounded">
-                  Editar
-                </button>
+                <router-link
+                  class="bg-green-500 text-white py-1 px-2 rounded"
+                  :to="{ name: 'editUser', params: { id: usuario.id } }"
+                  >Go to Foo</router-link
+                >
               </td>
             </tr>
           </tbody>
@@ -96,10 +98,6 @@ const retrieveUsers = () => {
 const toggleStatus = (usuario: User) => {
   usuario.status = !usuario.status
   localStorage.setItem('users', JSON.stringify(usersList.value))
-}
-
-const editUser = () => {
-  console.log()
 }
 
 onMounted(() => {
