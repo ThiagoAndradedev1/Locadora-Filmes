@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="max-w-2xl m-auto bg-gray-50 p-20">
-      <form>
+      <form @submit="onSubmit">
         <div>
           <div>
             <label
@@ -73,19 +73,40 @@
 </template>
 
 <script setup lang="ts">
+import type { User } from '@/data/models/User.model'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 
 const { errors, handleSubmit, defineField } = useForm({
   validationSchema: yup.object({
     name: yup.string().required(),
-    password: yup.string().min(6).required(),
-    document: yup.string().min(11).required()
+    password: yup.string().min(1).required(),
+    document: yup.string().min(1).required()
   })
 })
 
 const onSubmit = handleSubmit((values): void => {
-  alert(JSON.stringify(values, null, 2))
+  const newUser: User = {
+    id: Math.floor(Math.random() * 10000).toString(),
+    name: values.name,
+    document: values.document,
+    password: values.password,
+    status: true
+  }
+
+  const usersStorage = localStorage.getItem('users')
+
+  let actualUsers: User[] = usersStorage ? (JSON.parse(usersStorage) as User[]) : []
+  const userAlreadyExists = actualUsers.find((usuario) => usuario.document === newUser.document)
+
+  if (userAlreadyExists) {
+    alert('Este nome de usuário já está em uso. Por favor, escolha outro.')
+    return
+  }
+
+  actualUsers = [...actualUsers, newUser]
+  localStorage.setItem('users', JSON.stringify(actualUsers))
+  localStorage.setItem('actualUser', newUser.document)
 })
 
 const [name, nameAttrs] = defineField('name')
