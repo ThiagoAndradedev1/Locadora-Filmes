@@ -1,16 +1,75 @@
 <template>
-  <form @submit="onSubmit">
-    <input type="text" v-model="name" v-bind="nameAttrs" />
-    <div>{{ errors.name }}</div>
+  <div>
+    <div class="max-w-2xl m-auto bg-gray-50 p-20">
+      <form>
+        <div>
+          <div>
+            <label
+              for="first_name"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >Nome</label
+            >
+            <input
+              v-model="name"
+              v-bind="nameAttrs"
+              type="text"
+              id="name"
+              class="w-full h-12 px-4 mb-2 text-lg text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline"
+              placeholder="Informe seu nome"
+              required
+            />
+          </div>
+          <div class="text-red-600 text-sm">{{ errors.name }}</div>
+        </div>
 
-    <input type="password" v-model="password" v-bind="passwordAttrs" />
-    <div>{{ errors.password }}</div>
+        <div>
+          <div>
+            <label
+              for="password"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300 mt-4"
+              >Senha</label
+            >
+            <input
+              v-model="password"
+              v-bind="passwordAttrs"
+              type="password"
+              id="password"
+              class="w-full h-12 px-4 mb-2 text-lg text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline"
+              placeholder="Informe sua senha"
+              required
+            />
+            <div class="text-red-600 text-sm">{{ errors.password }}</div>
+          </div>
+        </div>
 
-    <input type="text" v-model="document" v-bind="documentAttrs" />
-    <div>{{ errors.document }}</div>
+        <div>
+          <div>
+            <label
+              for="document"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300 mt-4"
+              >Documento</label
+            >
+            <input
+              v-model="document"
+              v-bind="documentAttrs"
+              type="text"
+              id="document"
+              class="w-full h-12 px-4 mb-2 text-lg text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline"
+              placeholder="Informe seu documento"
+              required
+            />
+            <div class="text-red-600 text-sm">{{ errors.document }}</div>
+          </div>
+        </div>
 
-    <button>Submit</button>
-  </form>
+        <button
+          class="w-full mt-4 h-12 px-6 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+        >
+          Registrar
+        </button>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
