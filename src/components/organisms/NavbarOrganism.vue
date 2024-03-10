@@ -5,7 +5,7 @@
   >
     <div class="mb-2 sm:mb-0 inner">
       <RouterLink
-        :to="ROUTES.HOME"
+        :to="ROUTES.MOVIES"
         class="text-2xl no-underline text-grey-darkest hover:text-blue-dark font-sans font-bold"
         >Locadora Filmes 🍿</RouterLink
       ><br />

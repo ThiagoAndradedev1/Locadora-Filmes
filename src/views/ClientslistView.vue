@@ -88,6 +88,7 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import FullTableMolecule from '@/components/molecules/FullTableMolecule.vue'
 import type { Client } from '@/data/models/Client.model'
 import { ROUTES } from '@/utils/route-utils'
+import { getAll, set } from '@/utils/storage-utils'
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -99,17 +100,19 @@ const filterStatus = ref<string>('')
 const router = useRouter()
 
 const retrieveClients = (): void => {
-  const clientsLocalStorage = JSON.parse(localStorage.getItem('clients') || '[]')
-  clientsList.value = clientsLocalStorage
+  const clientsStorage = getAll<Client[]>('clients')
+  if (clientsStorage) {
+    clientsList.value = clientsStorage
+  }
 }
 
 const toggleStatus = (client: Client): void => {
   client.status = !client.status
-  localStorage.setItem('clients', JSON.stringify(clientsList.value))
+  set<Client[]>('clients', clientsList.value)
 }
 
 const goToEditView = (client: Client): void => {
-  router.push({ name: 'editClient', params: { id: client.id } })
+  router.push({ name: ROUTES.EDIT_CLIENT, params: { id: client.id } })
 }
 
 onMounted(() => {
@@ -118,10 +121,10 @@ onMounted(() => {
 
 const clientsFiltered = computed(() => {
   return clientsList.value.filter((client) => {
-    const nomeMatches = client.nome.toLowerCase().includes(findName.value.toLowerCase())
-    const documentoMatches = client.cpf.includes(findDocument.value)
+    const nameMatches = client.nome.toLowerCase().includes(findName.value.toLowerCase())
+    const documentMatches = client.cpf.includes(findDocument.value)
     const statusMatches = filterStatus.value === '' || String(client.status) === filterStatus.value
-    return nomeMatches && documentoMatches && statusMatches
+    return nameMatches && documentMatches && statusMatches
   })
 })
 </script>
