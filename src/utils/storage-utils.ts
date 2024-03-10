@@ -27,4 +27,8 @@ const getById = <T>(key: string, id: string): T | null => {
   return null
 }
 
-export { getAll, getById, set, exists }
+const remove = (key: string): void => {
+  localStorage.removeItem(key)
+}
+
+export { getAll, getById, set, exists, remove }

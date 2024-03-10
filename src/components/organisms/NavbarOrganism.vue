@@ -9,7 +9,7 @@
         class="text-2xl no-underline text-grey-darkest hover:text-blue-dark font-sans font-bold"
         >Locadora Filmes 🍿</RouterLink
       ><br />
-      <span class="text-xs text-grey-dark">Olá, Fulano de tal!</span>
+      <span class="text-xs text-grey-dark">Olá, {{ loggedInUser?.name }}!</span>
     </div>
 
     <div class="flex flex-wrap justify-center md:justify-end">
@@ -43,13 +43,36 @@
 </template>
 
 <script setup lang="ts">
+import type { User } from '@/data/models/User.model'
 import { ROUTES } from '@/utils/route-utils'
+import { getAll, remove } from '@/utils/storage-utils'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
+const loggedInUser = ref<User | undefined>(undefined)
+
+onMounted(() => {
+  const usersStorage = getAll<User[]>('users')
+  if (!usersStorage) {
+    return
+  }
+  const actualUserDocument = getAll<string>('actualUser')
+
+  if (!actualUserDocument) {
+    return
+  }
+
+  const actualUser = usersStorage.find((user) => user.document === actualUserDocument)
+
+  if (actualUser) {
+    loggedInUser.value = actualUser
+  }
+})
+
 const logout = () => {
-  localStorage.removeItem('actualUser')
+  remove('actualUser')
   router.push(ROUTES.LOGIN)
 }
 </script>
