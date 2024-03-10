@@ -55,6 +55,13 @@
             />
             <div class="text-red-400 text-sm">{{ errors.password }}</div>
           </div>
+          <div class="text-center mb-4">
+            <span
+              @click="redirectToLogin"
+              class="text-blue-500 text-center font-bold hover:underline cursor-pointer"
+              >Já tem uma conta? Faça o login!</span
+            >
+          </div>
           <div class="flex w-full">
             <button
               class="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in"
@@ -74,6 +81,7 @@ import { object, string } from 'yup'
 import { toTypedSchema } from '@vee-validate/yup'
 import type { User } from '@/data/models/User.model'
 import { useRouter } from 'vue-router'
+import { ROUTES } from '@/utils/route-utils'
 
 const { handleSubmit, defineField, errors } = useForm({
   validationSchema: toTypedSchema(
@@ -122,6 +130,10 @@ const onSubmit = handleSubmit(({ name, password, document }) => {
   localStorage.setItem('actualUser', newUser.document)
   router.push('/movies')
 })
+
+const redirectToLogin = (): void => {
+  router.push(ROUTES.LOGIN)
+}
 </script>
 
 <style scoped></style>

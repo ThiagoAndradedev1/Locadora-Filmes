@@ -39,6 +39,13 @@
             />
             <div class="text-red-400 text-sm">{{ errors.password }}</div>
           </div>
+          <div class="text-center mb-4">
+            <span
+              @click="redirectToRegister"
+              class="text-blue-500 text-center font-bold hover:underline cursor-pointer"
+              >Não tem uma conta? Cadastre-se!</span
+            >
+          </div>
           <div class="flex w-full">
             <button
               class="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in"
@@ -103,6 +110,10 @@ const onSubmit = handleSubmit(({ password, document }) => {
     alert('Nome de usuário ou senha incorretos.')
   }
 })
+
+const redirectToRegister = (): void => {
+  router.push(ROUTES.REGISTER)
+}
 </script>
 
 <style scoped></style>
