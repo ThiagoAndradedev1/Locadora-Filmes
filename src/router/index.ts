@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { ROUTES } from '@/utils/route-utils'
+import { exists } from '@/utils/storage-utils'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -75,7 +76,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  const isAuthenticated = localStorage.getItem('actualUser')
+  const isAuthenticated = exists('actualUser')
   if (to.meta.requiresAuth && !isAuthenticated) {
     return {
       path: '/login',
