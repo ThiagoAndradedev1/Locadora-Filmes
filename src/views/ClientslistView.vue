@@ -1,5 +1,13 @@
 <template>
-  <FullTableMolecule table-title="Clientes">
+  <FullTableMolecule
+    table-title="Clientes"
+    button-header-title="+ Cliente"
+    :on-pressed-button-header="
+      () => {
+        router.push(ROUTES.REGISTER_CLIENT)
+      }
+    "
+  >
     <template v-slot:filters>
       <div class="mb-2">
         <label for="nameFilter" class="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"
@@ -79,6 +87,7 @@
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import FullTableMolecule from '@/components/molecules/FullTableMolecule.vue'
 import type { Client } from '@/data/models/Client.model'
+import { ROUTES } from '@/utils/route-utils'
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
