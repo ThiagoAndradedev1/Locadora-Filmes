@@ -58,6 +58,8 @@ import { object, string } from 'yup'
 import { toTypedSchema } from '@vee-validate/yup'
 import type { User } from '@/data/models/User.model'
 import { useRouter } from 'vue-router'
+import { getAll, set } from '@/utils/storage-utils'
+import { ROUTES } from '@/utils/route-utils'
 
 const { handleSubmit, defineField, errors } = useForm({
   validationSchema: toTypedSchema(
@@ -79,11 +81,13 @@ const [document, documentAttrs] = defineField('document')
 const router = useRouter()
 
 const onSubmit = handleSubmit(({ password, document }) => {
-  const usersStorage = localStorage.getItem('users')
+  const usersStorage = getAll<User[]>('users')
 
-  let actualUsers: User[] = usersStorage ? (JSON.parse(usersStorage) as User[]) : []
+  if (!usersStorage) {
+    return
+  }
 
-  const user = actualUsers.find(
+  const user = usersStorage.find(
     (usuario) => usuario.document === document && usuario.password === password
   )
 
@@ -93,8 +97,8 @@ const onSubmit = handleSubmit(({ password, document }) => {
   }
 
   if (user) {
-    localStorage.setItem('actualUser', user.document)
-    router.push('/movies')
+    set<string>('actualUser', user.document)
+    router.push(ROUTES.MOVIES)
   } else {
     alert('Nome de usuário ou senha incorretos.')
   }
