@@ -14,11 +14,6 @@
 
     <div class="flex flex-wrap justify-center md:justify-end">
       <RouterLink
-        :to="ROUTES.HOME"
-        class="text-md no-underline text-black hover:text-blue-dark ml-2 px-1 hover:underline"
-        >Home</RouterLink
-      >
-      <RouterLink
         :to="ROUTES.USERS"
         class="text-md no-underline text-grey-darker hover:text-blue-dark ml-2 px-1 hover:underline"
         >Usuários</RouterLink

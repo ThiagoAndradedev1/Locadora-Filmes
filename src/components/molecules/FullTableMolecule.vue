@@ -1,6 +1,15 @@
 <template>
   <section class="container mx-auto p-6 font-mono">
-    <TitleHeaderAtom :title="tableTitle" />
+    <div class="flex justify-between items-center">
+      <TitleHeaderAtom :title="tableTitle" />
+      <button
+        v-if="!!buttonHeaderTitle"
+        @click="onPressedButtonHeader"
+        class="bg-gray-200 text-black text-lg rounded py-2 px-3 transition duration-150 ease-in focus:outline-none hover:bg-gray-300"
+      >
+        {{ buttonHeaderTitle }}
+      </button>
+    </div>
 
     <div class="m-5">
       <slot name="filters"> </slot>
@@ -30,6 +39,8 @@ import TitleHeaderAtom from '../atoms/TitleHeaderAtom.vue'
 
 defineProps<{
   tableTitle: string
+  buttonHeaderTitle?: string
+  onPressedButtonHeader?: () => void
 }>()
 </script>
 
