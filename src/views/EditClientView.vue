@@ -199,6 +199,9 @@ import { toTypedSchema } from '@vee-validate/yup'
 import { onMounted, ref, watch } from 'vue'
 import type { Client } from '@/data/models/Client.model'
 import { useRouter } from 'vue-router'
+import { getAll, set } from '@/utils/storage-utils'
+import { push } from 'notivue'
+import { ROUTES } from '@/utils/route-utils'
 
 const { handleSubmit, defineField, errors, setValues } = useForm({
   validationSchema: toTypedSchema(
@@ -258,24 +261,32 @@ const router = useRouter()
 const userId = ref<number>(0)
 
 const retrieveClient = () => {
-  const usuariosLocalStorage = JSON.parse(localStorage.getItem('clients') || '[]')
-  const foundClient = usuariosLocalStorage.find(
-    (client: Client) => client.id.toString() === userId.value.toString()
-  ) as Client
-  if (foundClient) {
-    setValues({
-      name: foundClient.nome,
-      surname: foundClient.sobrenome,
-      cpf: foundClient.cpf,
-      email: foundClient.contatos.email,
-      cellphone: foundClient.contatos.celular,
-      cep: foundClient.cep,
-      logradouro: foundClient.endereco.logradouro,
-      bairro: foundClient.endereco.bairro,
-      cidade: foundClient.endereco.cidade,
-      uf: foundClient.endereco.uf
-    })
+  const usersLocalStorage = getAll<Client[]>('clients')
+
+  if (!usersLocalStorage) {
+    return
   }
+
+  const foundClient = usersLocalStorage.find(
+    (client: Client) => client.id.toString() === userId.value.toString()
+  )
+
+  if (!foundClient) {
+    return
+  }
+
+  setValues({
+    name: foundClient.nome,
+    surname: foundClient.sobrenome,
+    cpf: foundClient.cpf,
+    email: foundClient.contatos.email,
+    cellphone: foundClient.contatos.celular,
+    cep: foundClient.cep,
+    logradouro: foundClient.endereco.logradouro,
+    bairro: foundClient.endereco.bairro,
+    cidade: foundClient.endereco.cidade,
+    uf: foundClient.endereco.uf
+  })
 }
 
 onMounted(() => {
@@ -297,6 +308,7 @@ const findAddress = async () => {
         })
       }
     } catch (error) {
+      push.error('Erro ao buscar endereço')
       console.error('Erro ao buscar endereço:', error)
     }
   }
@@ -304,15 +316,18 @@ const findAddress = async () => {
 
 const onSubmit = handleSubmit(
   ({ name, surname, cpf, email, cellphone, cep, logradouro, bairro, cidade, uf }) => {
-    const usersStorage = localStorage.getItem('clients')
-    let actualClients: Client[] = usersStorage ? (JSON.parse(usersStorage) as Client[]) : []
+    const clientsStorage = getAll<Client[]>('clients')
 
-    let foundClientIndex = actualClients.findIndex(
+    if (!clientsStorage) {
+      return
+    }
+
+    const foundClientIndex = clientsStorage.findIndex(
       (client: Client) => client.id.toString() === userId.value.toString()
     )
 
     if (foundClientIndex !== -1) {
-      const id = actualClients[foundClientIndex].id
+      const id = clientsStorage[foundClientIndex].id
       const editedClient: Client = {
         id: id,
         nome: name,
@@ -332,8 +347,10 @@ const onSubmit = handleSubmit(
         status: true,
         isAlocated: false
       }
-      actualClients.splice(foundClientIndex, 1, editedClient)
-      localStorage.setItem('clients', JSON.stringify(actualClients))
+      clientsStorage.splice(foundClientIndex, 1, editedClient)
+      set<Client[]>('clients', clientsStorage)
+      router.push(`../${ROUTES.CLIENTS}`)
+      push.success('Cliente editado com sucesso!')
     }
   }
 )

@@ -174,6 +174,7 @@ const onSubmit = handleSubmit(async ({ clientId, beginDate, finalDate }) => {
 
   movieRentings.value = [...movieRentings.value, newRent]
   set<MovieRent[]>('rentings', movieRentings.value)
+  push.success('Filme locado com sucesso!')
   router.push(ROUTES.MOVIES_RENTING_LIST)
 })
 </script>

@@ -94,6 +94,8 @@ import type { User } from '@/data/models/User.model'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { getAll, getById, set } from '@/utils/storage-utils'
+import { ROUTES } from '@/utils/route-utils'
+import { push } from 'notivue'
 
 const { handleSubmit, defineField, errors, setValues } = useForm({
   validationSchema: toTypedSchema(
@@ -163,6 +165,9 @@ const onSubmit = handleSubmit(({ name, password, document, status }) => {
     const editedUser = { id, name, password, document, status }
     usersStorage.splice(foundUserIndex, 1, editedUser)
     set<User[]>('users', usersStorage)
+
+    router.push(`../${ROUTES.USERS}`)
+    push.success('Usuário editado com sucesso!')
   }
 })
 </script>
