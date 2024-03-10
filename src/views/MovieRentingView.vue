@@ -100,6 +100,8 @@ import { getAll, set } from '@/utils/storage-utils'
 import { useRouter } from 'vue-router'
 import { ROUTES } from '@/utils/route-utils'
 
+import { push } from 'notivue'
+
 const clients = ref<Client[]>([])
 const movieRentings = ref<MovieRent[]>([])
 
@@ -148,14 +150,14 @@ const onSubmit = handleSubmit(async ({ clientId, beginDate, finalDate }) => {
   )
 
   if (clientIsCurrentlyRenting) {
-    alert('Este cliente já possui uma alocação ativa.')
+    push.error('Este cliente já possui uma alocação ativa.')
     return
   }
 
   const client = clients.value.find((c) => c.id.toString() === clientId)
 
   if (!client) {
-    alert('Cliente não encontrado.')
+    push.error('Cliente não encontrado')
     return
   }
 
