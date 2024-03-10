@@ -95,14 +95,13 @@ import { toTypedSchema } from '@vee-validate/yup'
 import { useMovieStore } from '@/stores/movies'
 import type { MovieRent } from '@/data/models/MovieRent'
 import type { Client } from '@/data/models/Client.model'
+import { onMounted, ref } from 'vue'
+import { getAll, set } from '@/utils/storage-utils'
+import { useRouter } from 'vue-router'
+import { ROUTES } from '@/utils/route-utils'
 
-const clientsStorage = localStorage.getItem('clients')
-
-let clients: Client[] = clientsStorage ? (JSON.parse(clientsStorage) as Client[]) : []
-
-const rentingsStorage = localStorage.getItem('rentings')
-
-let rentings: MovieRent[] = rentingsStorage ? (JSON.parse(rentingsStorage) as MovieRent[]) : []
+const clients = ref<Client[]>([])
+const movieRentings = ref<MovieRent[]>([])
 
 const store = useMovieStore()
 
@@ -128,8 +127,23 @@ const [clientId, clientIdAttrs] = defineField('clientId')
 const [beginDate, beginDateAttrs] = defineField('beginDate')
 const [finalDate, finalDateAttrs] = defineField('finalDate')
 
+const router = useRouter()
+
+onMounted(() => {
+  const clientsStorage = getAll<Client[]>('clients')
+  const movieRentingStorage = getAll<MovieRent[]>('rentings')
+
+  if (clientsStorage) {
+    clients.value = clientsStorage
+  }
+
+  if (movieRentingStorage) {
+    movieRentings.value = movieRentingStorage
+  }
+})
+
 const onSubmit = handleSubmit(async ({ clientId, beginDate, finalDate }) => {
-  const clientIsCurrentlyRenting = rentings.some(
+  const clientIsCurrentlyRenting = movieRentings.value.some(
     (movie) => movie.clientId === clientId && movie.status === true
   )
 
@@ -138,7 +152,7 @@ const onSubmit = handleSubmit(async ({ clientId, beginDate, finalDate }) => {
     return
   }
 
-  const client = clients.find((c) => c.id.toString() === clientId)
+  const client = clients.value.find((c) => c.id.toString() === clientId)
 
   if (!client) {
     alert('Cliente não encontrado.')
@@ -155,8 +169,10 @@ const onSubmit = handleSubmit(async ({ clientId, beginDate, finalDate }) => {
     endRenting: finalDate,
     status: true
   }
-  rentings.push(newRent)
-  localStorage.setItem('rentings', JSON.stringify(rentings))
+
+  movieRentings.value = [...movieRentings.value, newRent]
+  set<MovieRent[]>('rentings', movieRentings.value)
+  router.push(ROUTES.MOVIES_RENTING_LIST)
 })
 </script>
 

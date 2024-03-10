@@ -92,6 +92,7 @@ import { useRouter } from 'vue-router'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import FullTableMolecule from '@/components/molecules/FullTableMolecule.vue'
 import { useMovieStore } from '@/stores/movies'
+import { ROUTES } from '@/utils/route-utils'
 
 const movieStore = useMovieStore()
 
@@ -146,7 +147,7 @@ const rentMovie = () => {
 
     movieStore.setMovie(filmeData)
 
-    router.push('/moviesRenting')
+    router.push(ROUTES.MOVIES_RENTING)
   }
 }
 </script>
