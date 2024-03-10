@@ -5,7 +5,7 @@
   >
     <div class="mb-2 sm:mb-0 inner">
       <RouterLink
-        :to="ROUTES.MOVIES"
+        :to="`/${ROUTES.MOVIES}`"
         class="text-2xl no-underline text-grey-darkest hover:text-blue-dark font-sans font-bold"
         >Locadora Filmes 🍿</RouterLink
       ><br />
@@ -14,22 +14,22 @@
 
     <div class="flex flex-wrap justify-center md:justify-end">
       <RouterLink
-        :to="ROUTES.USERS"
+        :to="`/${ROUTES.USERS}`"
         class="text-md no-underline text-grey-darker hover:text-blue-dark ml-2 px-1 hover:underline"
         >Usuários</RouterLink
       >
       <RouterLink
-        :to="ROUTES.CLIENTS"
+        :to="`/${ROUTES.CLIENTS}`"
         class="text-md no-underline text-grey-darker hover:text-blue-dark ml-2 px-1 hover:underline"
         >Clientes</RouterLink
       >
       <RouterLink
-        :to="ROUTES.MOVIES"
+        :to="`/${ROUTES.MOVIES}`"
         class="text-md no-underline text-grey-darker hover:text-blue-dark ml-2 px-1 hover:underline"
         >Filmes</RouterLink
       >
       <RouterLink
-        :to="ROUTES.MOVIES_RENTING_LIST"
+        :to="`/${ROUTES.MOVIES_RENTING_LIST}`"
         class="text-md no-underline text-grey-darker hover:text-blue-dark ml-2 px-1 hover:underline"
         >Locações</RouterLink
       >
