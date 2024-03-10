@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { ROUTES } from '@/utils/route-utils'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: ROUTES.HOME,
       meta: { requiresAuth: false },
       component: HomeView
     },
@@ -24,49 +25,49 @@ const router = createRouter({
     },
     {
       path: '/users',
-      name: 'users',
+      name: ROUTES.USERS,
       meta: { requiresAuth: true },
       component: () => import('../views/UsersView.vue')
     },
     {
-      path: '/moviesRenting',
-      name: 'moviesRenting',
+      path: '/movies-renting',
+      name: ROUTES.MOVIES_RENTING,
       meta: { requiresAuth: true },
       component: () => import('../views/MovieRentingView.vue')
     },
     {
-      path: '/moviesRentingList',
-      name: 'moviesRentingList',
+      path: '/movies-renting-list',
+      name: ROUTES.MOVIES_RENTING_LIST,
       meta: { requiresAuth: true },
       component: () => import('../views/MovieRentingListView.vue')
     },
     {
       path: '/movies',
-      name: 'movies',
+      name: ROUTES.MOVIES,
       meta: { requiresAuth: true },
       component: () => import('../views/MoviesListView.vue')
     },
     {
       path: '/clients',
-      name: 'clients',
+      name: ROUTES.CLIENTS,
       meta: { requiresAuth: true },
       component: () => import('../views/ClientslistView.vue')
     },
     {
-      path: '/editClient/:id',
-      name: 'editClient',
+      path: '/edit-client/:id',
+      name: ROUTES.EDIT_CLIENT,
       meta: { requiresAuth: true },
       component: () => import('../views/EditClientView.vue')
     },
     {
-      path: '/registerClient',
-      name: 'registerClient',
+      path: '/register-client',
+      name: ROUTES.REGISTER_CLIENT,
       meta: { requiresAuth: true },
       component: () => import('../views/RegisterclientView.vue')
     },
     {
-      path: '/editUser/:id',
-      name: 'editUser',
+      path: '/edit-user/:id',
+      name: ROUTES.EDIT_USER,
       meta: { requiresAuth: true },
       component: () => import('../views/EdituserView.vue')
     }

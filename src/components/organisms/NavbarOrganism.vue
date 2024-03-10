@@ -4,32 +4,43 @@
     class="font-mono flex flex-col text-center content-center sm:flex-row sm:text-left sm:justify-between py-2 px-6 bg-white sm:items-baseline w-full"
   >
     <div class="mb-2 sm:mb-0 inner">
-      <a
-        href="/home"
+      <RouterLink
+        :to="ROUTES.HOME"
         class="text-2xl no-underline text-grey-darkest hover:text-blue-dark font-sans font-bold"
-        >Locadora Filmes 🍿</a
+        >Locadora Filmes 🍿</RouterLink
       ><br />
       <span class="text-xs text-grey-dark">Olá, Fulano de tal!</span>
     </div>
 
     <div class="flex flex-wrap justify-center md:justify-end">
-      <a href="#" class="text-md no-underline text-black hover:text-blue-dark ml-2 px-1">Home</a>
-      <a href="#" class="text-md no-underline text-grey-darker hover:text-blue-dark ml-2 px-1"
-        >Usuários</a
+      <RouterLink
+        :to="ROUTES.HOME"
+        class="text-md no-underline text-black hover:text-blue-dark ml-2 px-1 hover:underline"
+        >Home</RouterLink
       >
-      <a href="#" class="text-md no-underline text-grey-darker hover:text-blue-dark ml-2 px-1"
-        >Clientes</a
+      <RouterLink
+        :to="ROUTES.USERS"
+        class="text-md no-underline text-grey-darker hover:text-blue-dark ml-2 px-1 hover:underline"
+        >Usuários</RouterLink
       >
-      <a href="#" class="text-md no-underline text-grey-darker hover:text-blue-dark ml-2 px-1"
-        >Filmes</a
+      <RouterLink
+        :to="ROUTES.CLIENTS"
+        class="text-md no-underline text-grey-darker hover:text-blue-dark ml-2 px-1 hover:underline"
+        >Clientes</RouterLink
       >
-      <a href="#" class="text-md no-underline text-grey-darker hover:text-blue-dark ml-2 px-1"
-        >Locações</a
+      <RouterLink
+        :to="ROUTES.MOVIES"
+        class="text-md no-underline text-grey-darker hover:text-blue-dark ml-2 px-1 hover:underline"
+        >Filmes</RouterLink
+      >
+      <RouterLink
+        :to="ROUTES.MOVIES_RENTING_LIST"
+        class="text-md no-underline text-grey-darker hover:text-blue-dark ml-2 px-1 hover:underline"
+        >Locações</RouterLink
       >
       <a
         @click="logout"
-        href="#"
-        class="text-md no-underline text-red-300 hover:text-blue-dark ml-2 px-1"
+        class="text-md no-underline text-red-300 hover:text-blue-dark ml-2 px-1 cursor-pointer hover:text-red-700"
         >Logout</a
       >
     </div>
@@ -37,8 +48,14 @@
 </template>
 
 <script setup lang="ts">
+import { ROUTES } from '@/utils/route-utils'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
 const logout = () => {
   localStorage.removeItem('actualUser')
+  router.push(ROUTES.LOGIN)
 }
 </script>
 
