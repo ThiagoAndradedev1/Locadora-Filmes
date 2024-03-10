@@ -14,14 +14,17 @@ const exists = (key: string): boolean => {
   return localStorage.getItem(key) !== null
 }
 
-const getById = <T>(key: string, id: string): T => {
+const getById = <T>(key: string, id: string): T | null => {
   const value = localStorage.getItem(key)
   if (value) {
     const result = JSON.parse(value) as { id: string }[]
     const item = result.find((item) => item.id === id)
-    return item as T
+    if (item) {
+      return item as T
+    }
+    return null
   }
-  return {} as T
+  return null
 }
 
 export { getAll, getById, set, exists }
