@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import { ROUTES } from '@/utils/route-utils'
 import { exists } from '@/utils/storage-utils'
 
@@ -9,8 +8,9 @@ const router = createRouter({
     {
       path: '/',
       name: ROUTES.HOME,
-      meta: { requiresAuth: false },
-      component: HomeView
+      redirect: () => {
+        return { path: '/movies' }
+      }
     },
     {
       path: '/register',
