@@ -51,7 +51,9 @@
 
     <template v-slot:body>
       <tr class="text-gray-700" v-if="loading">
-        <td class="px-4 py-3 text-ms font-semibold border" colspan="4">Carregando...</td>
+        <td class="px-4 py-3 text-ms font-semibold border text-center" colspan="4">
+          Carregando...
+        </td>
       </tr>
       <tr class="text-gray-700" v-else-if="movie">
         <td class="px-4 py-3 text-ms font-semibold border">
@@ -70,10 +72,14 @@
         </td>
       </tr>
       <tr v-else-if="searched && !movie" class="text-gray-700">
-        <td class="px-4 py-3 text-ms font-semibold border" colspan="4">Nenhum filme encontrado.</td>
+        <td class="px-4 py-3 text-ms font-semibold border text-center" colspan="4">
+          Nenhum filme encontrado.
+        </td>
       </tr>
       <tr v-else class="text-gray-700">
-        <td class="px-4 py-3 text-ms font-semibold border" colspan="4">Realize uma busca.</td>
+        <td class="px-4 py-3 text-ms font-semibold border text-center" colspan="4">
+          Realize uma busca
+        </td>
       </tr>
     </template>
   </FullTableMolecule>
@@ -131,7 +137,7 @@ const searchMovies = async () => {
 
 const rentMovie = () => {
   if (movie.value) {
-    const filmeData = {
+    const filmeData: Movie = {
       Title: movie.value.Title,
       Year: movie.value.Year,
       imdbID: movie.value.imdbID,
