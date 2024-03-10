@@ -6,11 +6,21 @@
     >
       <div class="mt-10">
         <form @submit="onSubmit" novalidate>
+          <div class="flex justify-center">
+            <img
+              :src="store.movie.Poster"
+              alt="MovieImg"
+              class="max-w-52 mx-auto"
+              v-if="store.movie.Poster !== 'N/A'"
+            />
+          </div>
           <div class="flex flex-col mb-6">
-            <label for="name" class="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"
+            <label
+              for="name"
+              class="text-center mb-1 text-xs sm:text-sm tracking-wide text-gray-600"
               >Filme</label
             >
-            <h3 class="text-lg font-bold">{{ store.movie.Title }}</h3>
+            <h3 class="text-lg font-bold text-center">{{ store.movie.Title }}</h3>
           </div>
 
           <div class="flex flex-col mb-6">
@@ -83,11 +93,16 @@ import { useForm } from 'vee-validate'
 import { date, object, string } from 'yup'
 import { toTypedSchema } from '@vee-validate/yup'
 import { useMovieStore } from '@/stores/movies'
-import { ref } from 'vue'
 import type { MovieRent } from '@/data/models/MovieRent'
+import type { Client } from '@/data/models/Client.model'
 
-const clients = JSON.parse(localStorage.getItem('clients') || '[]')
-const rentings = ref<MovieRent[]>(JSON.parse(localStorage.getItem('rentings') || '[]'))
+const clientsStorage = localStorage.getItem('clients')
+
+let clients: Client[] = clientsStorage ? (JSON.parse(clientsStorage) as Client[]) : []
+
+const rentingsStorage = localStorage.getItem('rentings')
+
+let rentings: MovieRent[] = rentingsStorage ? (JSON.parse(rentingsStorage) as MovieRent[]) : []
 
 const store = useMovieStore()
 
@@ -114,7 +129,7 @@ const [beginDate, beginDateAttrs] = defineField('beginDate')
 const [finalDate, finalDateAttrs] = defineField('finalDate')
 
 const onSubmit = handleSubmit(async ({ clientId, beginDate, finalDate }) => {
-  const clientIsCurrentlyRenting = rentings.value.some(
+  const clientIsCurrentlyRenting = rentings.some(
     (movie) => movie.clientId === clientId && movie.status === true
   )
 
@@ -123,15 +138,25 @@ const onSubmit = handleSubmit(async ({ clientId, beginDate, finalDate }) => {
     return
   }
 
-  const newAlocation = {
+  const client = clients.find((c) => c.id.toString() === clientId)
+
+  if (!client) {
+    alert('Cliente não encontrado.')
+    return
+  }
+
+  const clientName = client.nome
+
+  const newRent: MovieRent = {
     clientId: clientId,
+    clientName: clientName,
     movie: store.movie,
     beginRenting: beginDate,
     endRenting: finalDate,
     status: true
   }
-  rentings.value.push(newAlocation)
-  localStorage.setItem('rentings', JSON.stringify(rentings.value))
+  rentings.push(newRent)
+  localStorage.setItem('rentings', JSON.stringify(rentings))
 })
 </script>
 

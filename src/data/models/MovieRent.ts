@@ -1,6 +1,7 @@
 export interface MovieRent {
   beginRenting: Date
   clientId: string
+  clientName: string
   endRenting: Date
   movie: {
     Title: string
