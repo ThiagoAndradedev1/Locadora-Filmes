@@ -93,7 +93,7 @@ import { toTypedSchema } from '@vee-validate/yup'
 import type { User } from '@/data/models/User.model'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { getAll, getById } from '@/utils/storage-utils'
+import { getAll, getById, set } from '@/utils/storage-utils'
 
 const { handleSubmit, defineField, errors, setValues } = useForm({
   validationSchema: toTypedSchema(
@@ -150,17 +150,19 @@ onMounted(() => {
 const onSubmit = handleSubmit(({ name, password, document, status }) => {
   const usersStorage = getAll<User[]>('users')
 
-  if (usersStorage) {
-    let foundUserIndex = usersStorage.findIndex(
-      (usuario: User) => usuario.id === userId.value.toString()
-    )
+  if (!usersStorage) {
+    return
+  }
 
-    if (foundUserIndex !== -1) {
-      const id = usersStorage[foundUserIndex].id
-      const editedUser = { id, name, password, document, status }
-      usersStorage.splice(foundUserIndex, 1, editedUser)
-      localStorage.setItem('users', JSON.stringify(usersStorage))
-    }
+  let foundUserIndex = usersStorage.findIndex(
+    (usuario: User) => usuario.id === userId.value.toString()
+  )
+
+  if (foundUserIndex !== -1) {
+    const id = usersStorage[foundUserIndex].id
+    const editedUser = { id, name, password, document, status }
+    usersStorage.splice(foundUserIndex, 1, editedUser)
+    set<User[]>('users', usersStorage)
   }
 })
 </script>

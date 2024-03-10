@@ -82,6 +82,8 @@
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import FullTableMolecule from '@/components/molecules/FullTableMolecule.vue'
 import type { User } from '@/data/models/User.model'
+import { ROUTES } from '@/utils/route-utils'
+import { getAll, set } from '@/utils/storage-utils'
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -93,17 +95,22 @@ const filterStatus = ref<string>('')
 const router = useRouter()
 
 const retrieveUsers = (): void => {
-  const usuariosLocalStorage = JSON.parse(localStorage.getItem('users') || '[]')
-  usersList.value = usuariosLocalStorage
+  const usersStorage = getAll<User[]>('users')
+
+  if (!usersStorage) {
+    return
+  }
+
+  usersList.value = usersStorage
 }
 
-const toggleStatus = (usuario: User): void => {
-  usuario.status = !usuario.status
-  localStorage.setItem('users', JSON.stringify(usersList.value))
+const toggleStatus = (user: User): void => {
+  user.status = !user.status
+  set<User[]>('users', usersList.value)
 }
 
 const goToEditView = (user: User): void => {
-  router.push({ name: 'editUser', params: { id: user.id } })
+  router.push({ name: ROUTES.EDIT_USER, params: { id: user.id } })
 }
 
 onMounted(() => {
@@ -112,10 +119,10 @@ onMounted(() => {
 
 const usersFiltered = computed(() => {
   return usersList.value.filter((usuario) => {
-    const nomeMatches = usuario.name.toLowerCase().includes(findName.value.toLowerCase())
-    const documentoMatches = usuario.document.includes(findDocument.value)
+    const nameMatches = usuario.name.toLowerCase().includes(findName.value.toLowerCase())
+    const documentMatches = usuario.document.includes(findDocument.value)
     const statusMatches = filterStatus.value === '' || String(usuario.status) === filterStatus.value
-    return nomeMatches && documentoMatches && statusMatches
+    return nameMatches && documentMatches && statusMatches
   })
 })
 </script>
