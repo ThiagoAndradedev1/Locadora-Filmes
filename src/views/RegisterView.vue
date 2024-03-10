@@ -82,6 +82,7 @@ import { toTypedSchema } from '@vee-validate/yup'
 import type { User } from '@/data/models/User.model'
 import { useRouter } from 'vue-router'
 import { ROUTES } from '@/utils/route-utils'
+import { push } from 'notivue'
 
 const { handleSubmit, defineField, errors } = useForm({
   validationSchema: toTypedSchema(
@@ -121,13 +122,14 @@ const onSubmit = handleSubmit(({ name, password, document }) => {
   const userAlreadyExists = actualUsers.find((usuario) => usuario.document === newUser.document)
 
   if (userAlreadyExists) {
-    alert('Este usuário já está cadastrado!')
+    push.info('Usuário já cadastrado!')
     return
   }
 
   actualUsers = [...actualUsers, newUser]
   localStorage.setItem('users', JSON.stringify(actualUsers))
   localStorage.setItem('actualUser', newUser.document)
+  push.success('Usuário registrado com sucesso!')
   router.push('/movies')
 })
 

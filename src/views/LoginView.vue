@@ -68,6 +68,8 @@ import { useRouter } from 'vue-router'
 import { getAll, set } from '@/utils/storage-utils'
 import { ROUTES } from '@/utils/route-utils'
 
+import { push } from 'notivue'
+
 const { handleSubmit, defineField, errors } = useForm({
   validationSchema: toTypedSchema(
     object({
@@ -99,15 +101,16 @@ const onSubmit = handleSubmit(({ password, document }) => {
   )
 
   if (user?.status === false) {
-    alert('Usuario inativo')
+    push.info('Usuário inativo')
     return
   }
 
   if (user) {
     set<string>('actualUser', user.document)
+    push.success('Usuário logado com sucesso!')
     router.push(ROUTES.MOVIES)
   } else {
-    alert('Nome de usuário ou senha incorretos.')
+    push.error('Nome de usuário ou senha incorretos')
   }
 })
 

@@ -198,6 +198,7 @@ import { object, string } from 'yup'
 import { toTypedSchema } from '@vee-validate/yup'
 import { watch } from 'vue'
 import type { Client } from '@/data/models/Client.model'
+import { push } from 'notivue'
 
 const { handleSubmit, defineField, errors, setValues } = useForm({
   validationSchema: toTypedSchema(
@@ -300,7 +301,7 @@ const onSubmit = handleSubmit(
     const clientAlreadyExists = currentClients.find((client) => client.cpf === newClient.cpf)
 
     if (clientAlreadyExists) {
-      alert('Este cliente já está cadastrado!')
+      push.error('Este cliente já esta cadastrado!')
       return
     }
 
@@ -308,7 +309,7 @@ const onSubmit = handleSubmit(
 
     localStorage.setItem('clients', JSON.stringify(currentClients))
 
-    alert('Cliente registrado com sucesso!')
+    push.success('Cliente registrado com sucesso!')
   }
 )
 

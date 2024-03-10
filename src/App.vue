@@ -3,7 +3,7 @@ import { RouterView } from 'vue-router'
 import './style.css'
 import NavbarOrganism from './components/organisms/NavbarOrganism.vue'
 
-import { Notivue, Notification, push } from 'notivue'
+import { Notivue, Notification } from 'notivue'
 </script>
 
 <template>
