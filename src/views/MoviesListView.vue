@@ -17,7 +17,7 @@
           />
         </div>
         <div>
-          <ButtonAtom @click="searchMovies" class="p-5" label="Pesquisar" :disabled="false" />
+          <ButtonAtom @click="searchMovies" class="p-5" label="Pesquisar" :disabled="loading" />
         </div>
       </div>
       <div class="flex items-end gap-4">
@@ -37,7 +37,7 @@
           />
         </div>
         <div>
-          <ButtonAtom @click="searchMovies" class="p-5" label="Pesquisar" :disabled="false" />
+          <ButtonAtom @click="searchMovies" class="p-5" label="Pesquisar" :disabled="loading" />
         </div>
       </div>
     </template>
@@ -50,7 +50,10 @@
     </template>
 
     <template v-slot:body>
-      <tr class="text-gray-700" v-if="movie">
+      <tr class="text-gray-700" v-if="loading">
+        <td class="px-4 py-3 text-ms font-semibold border" colspan="4">Carregando...</td>
+      </tr>
+      <tr class="text-gray-700" v-else-if="movie">
         <td class="px-4 py-3 text-ms font-semibold border">
           <img
             v-if="movie.Poster !== 'N/A'"
@@ -58,11 +61,12 @@
             :src="movie.Poster"
             :alt="movie.Title"
           />
+          <span v-else>Nenhuma imagem disponível</span>
         </td>
         <td class="px-4 py-3 text-ms font-semibold border">{{ movie.Title }}</td>
         <td class="px-4 py-3 text-ms font-semibold border">{{ movie.Year }}</td>
         <td class="px-4 py-3 text-sm border">
-          <ButtonAtom label="Alugar" :disabled="false" :on-pressed="rentMovie" />
+          <ButtonAtom label="Alugar" :disabled="!movie" :on-pressed="rentMovie" />
         </td>
       </tr>
       <tr v-else-if="searched && !movie" class="text-gray-700">
@@ -81,17 +85,22 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import FullTableMolecule from '@/components/molecules/FullTableMolecule.vue'
+import { useMovieStore } from '@/stores/movies'
+
+const movieStore = useMovieStore()
 
 const title = ref<string>('')
 const year = ref<string>('')
 const movie = ref<Movie | null>(null)
 const searched = ref<boolean>(false)
+const loading = ref<boolean>(false)
 
 const router = useRouter()
 
 const searchMovies = async () => {
+  loading.value = true
   searched.value = true
-  const apiKey = 'e44d0514'
+  const apiKey = import.meta.env.VITE_API_KEY
   const baseUrl = `http://www.omdbapi.com/?apikey=${apiKey}&type=movie&plot=short`
 
   let url = baseUrl
@@ -115,6 +124,8 @@ const searchMovies = async () => {
   } catch (error) {
     console.error('Erro ao buscar filme:', error)
     movie.value = null
+  } finally {
+    loading.value = false
   }
 }
 
@@ -123,12 +134,13 @@ const rentMovie = () => {
     const filmeData = {
       Title: movie.value.Title,
       Year: movie.value.Year,
-      imdbID: movie.value.imdbID
+      imdbID: movie.value.imdbID,
+      Poster: movie.value.Poster
     }
 
-    const filmeDataString = encodeURIComponent(JSON.stringify(filmeData))
+    movieStore.setMovie(filmeData)
 
-    router.push({ name: 'AlocacaoFilmes', params: { filme: filmeDataString } })
+    router.push('/moviesRenting')
   }
 }
 </script>
