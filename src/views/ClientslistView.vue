@@ -66,7 +66,10 @@
         <td class="px-4 py-3 text-ms font-semibold border">{{ client.nome }}</td>
         <td class="px-4 py-3 text-ms font-semibold border">{{ client.cpf }}</td>
         <td class="px-4 py-3 text-ms font-semibold border">
-          {{ client.status ? 'Ativo' : 'Inativo' }}
+          <BadgeAtom
+            :label="client.status ? 'Ativo' : 'Desativado'"
+            :severity="client.status ? 'success' : 'error'"
+          />
         </td>
         <td class="px-4 py-3 text-sm border">
           <div class="flex gap-2">
@@ -84,6 +87,7 @@
 </template>
 
 <script setup lang="ts">
+import BadgeAtom from '@/components/atoms/BadgeAtom.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import FullTableMolecule from '@/components/molecules/FullTableMolecule.vue'
 import type { Client } from '@/data/models/Client.model'
