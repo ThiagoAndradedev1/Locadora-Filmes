@@ -93,6 +93,7 @@ import { toTypedSchema } from '@vee-validate/yup'
 import type { User } from '@/data/models/User.model'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { getAll, getById } from '@/utils/storage-utils'
 
 const { handleSubmit, defineField, errors, setValues } = useForm({
   validationSchema: toTypedSchema(
@@ -121,18 +122,24 @@ const router = useRouter()
 const userId = ref<number>(0)
 
 const retrieveUser = () => {
-  const usuariosLocalStorage = JSON.parse(localStorage.getItem('users') || '[]')
-  const foundUser = usuariosLocalStorage.find(
-    (usuario: User) => usuario.id === userId.value.toString()
-  ) as User
-  if (foundUser) {
-    setValues({
-      document: foundUser.document,
-      name: foundUser.name,
-      password: foundUser.password,
-      status: Boolean(foundUser.status)
-    })
+  const usersStorage = getAll<User[]>('users')
+
+  if (!usersStorage) {
+    return
   }
+
+  const foundUser = getById<User>('users', userId.value.toString())
+
+  if (!foundUser) {
+    return
+  }
+
+  setValues({
+    document: foundUser.document,
+    name: foundUser.name,
+    password: foundUser.password,
+    status: Boolean(foundUser.status)
+  })
 }
 
 onMounted(() => {
@@ -141,18 +148,19 @@ onMounted(() => {
 })
 
 const onSubmit = handleSubmit(({ name, password, document, status }) => {
-  const usersStorage = localStorage.getItem('users')
-  let actualUsers: User[] = usersStorage ? (JSON.parse(usersStorage) as User[]) : []
+  const usersStorage = getAll<User[]>('users')
 
-  let foundUserIndex = actualUsers.findIndex(
-    (usuario: User) => usuario.id === userId.value.toString()
-  )
+  if (usersStorage) {
+    let foundUserIndex = usersStorage.findIndex(
+      (usuario: User) => usuario.id === userId.value.toString()
+    )
 
-  if (foundUserIndex !== -1) {
-    const id = actualUsers[foundUserIndex].id
-    const editedUser = { id, name, password, document, status }
-    actualUsers.splice(foundUserIndex, 1, editedUser)
-    localStorage.setItem('users', JSON.stringify(actualUsers))
+    if (foundUserIndex !== -1) {
+      const id = usersStorage[foundUserIndex].id
+      const editedUser = { id, name, password, document, status }
+      usersStorage.splice(foundUserIndex, 1, editedUser)
+      localStorage.setItem('users', JSON.stringify(usersStorage))
+    }
   }
 })
 </script>
