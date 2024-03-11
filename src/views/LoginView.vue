@@ -14,6 +14,7 @@
             <input
               v-model="document"
               v-bind="documentAttrs"
+              maxlength="14"
               id="document"
               type="text"
               name="document"
@@ -69,6 +70,7 @@ import { getAll, set } from '@/utils/storage-utils'
 import { ROUTES } from '@/utils/route-utils'
 
 import { push } from 'notivue'
+import { watch } from 'vue'
 
 const { handleSubmit, defineField, errors } = useForm({
   validationSchema: toTypedSchema(
@@ -77,8 +79,10 @@ const { handleSubmit, defineField, errors } = useForm({
         .min(4, 'A senha deve ter pelo menos 4 caracteres')
         .required('O campo password é obrigatório'),
       document: string()
-        .min(11, 'O CPF deve ter 11 digitos')
-        .max(11, 'O CPF deve ter 11 digitos')
+        .matches(
+          /^\d{3}\.\d{3}\.\d{3}-\d{2}$/,
+          'O CPF deve estar no formato correto (XXX.XXX.XXX-XX)'
+        )
         .required('O campo CPF é obrigatório')
     })
   )
@@ -96,8 +100,10 @@ const onSubmit = handleSubmit(({ password, document }) => {
     return
   }
 
+  const cleanedCPF = document.replace(/\D/g, '')
+
   const user = usersStorage.find(
-    (usuario) => usuario.document === document && usuario.password === password
+    (usuario) => usuario.document === cleanedCPF && usuario.password === password
   )
 
   if (user?.status === false) {
@@ -117,6 +123,13 @@ const onSubmit = handleSubmit(({ password, document }) => {
 const redirectToRegister = (): void => {
   router.push(ROUTES.REGISTER)
 }
+
+watch(document, () => {
+  if (document.value) {
+    const cleanedCPF = document.value.replace(/\D/g, '')
+    document.value = cleanedCPF.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
+  }
+})
 </script>
 
 <style scoped></style>

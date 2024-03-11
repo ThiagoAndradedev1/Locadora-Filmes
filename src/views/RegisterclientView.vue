@@ -275,11 +275,12 @@ const findAddress = async () => {
 
 const onSubmit = handleSubmit(
   async ({ name, surname, cpf, email, cellphone, cep, logradouro, bairro, cidade, uf }) => {
+    const cleanedCPF = cpf.replace(/\D/g, '')
     const newClient: Client = {
       id: Math.floor(Math.random() * 10000),
       nome: name,
       sobrenome: surname,
-      cpf,
+      cpf: cleanedCPF,
       contatos: {
         email,
         celular: cellphone

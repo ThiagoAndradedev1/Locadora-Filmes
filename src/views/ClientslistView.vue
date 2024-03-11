@@ -64,7 +64,9 @@
     <template v-slot:body>
       <tr v-for="client in clientsFiltered" :key="client.id" class="text-gray-700">
         <td class="px-4 py-3 text-ms font-semibold border">{{ client.nome }}</td>
-        <td class="px-4 py-3 text-ms font-semibold border">{{ client.cpf }}</td>
+        <td class="px-4 py-3 text-ms font-semibold border">
+          {{ client.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4') }}
+        </td>
         <td class="px-4 py-3 text-ms font-semibold border">
           <BadgeAtom
             :label="client.status ? 'Ativo' : 'Desativado'"
@@ -125,6 +127,8 @@ onMounted(() => {
 
 const clientsFiltered = computed(() => {
   return clientsList.value.filter((client) => {
+    console.log(client.cpf)
+    console.log(findDocument.value)
     const nameMatches = client.nome.toLowerCase().includes(findName.value.toLowerCase())
     const documentMatches = client.cpf.includes(findDocument.value)
     const statusMatches = filterStatus.value === '' || String(client.status) === filterStatus.value

@@ -59,7 +59,9 @@
     <template v-slot:body>
       <tr v-for="user in usersFiltered" :key="user.id" class="text-gray-700">
         <td class="px-4 py-3 text-ms font-semibold border">{{ user.name }}</td>
-        <td class="px-4 py-3 text-ms font-semibold border">{{ user.document }}</td>
+        <td class="px-4 py-3 text-ms font-semibold border">
+          {{ user.document.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4') }}
+        </td>
         <td class="px-4 py-3 text-ms font-semibold border">
           <BadgeAtom
             :label="user.status ? 'Ativo' : 'Desativado'"

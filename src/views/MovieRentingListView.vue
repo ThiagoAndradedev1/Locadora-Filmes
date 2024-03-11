@@ -60,8 +60,10 @@
       <tr v-for="renting in rentingFiltered" :key="renting.clientId" class="text-gray-700">
         <td class="px-4 py-3 text-ms font-semibold border">{{ renting.clientName }}</td>
         <td class="px-4 py-3 text-ms font-semibold border">{{ renting.movie.Title }}</td>
-        <td class="px-4 py-3 text-ms font-semibold border">{{ renting.beginRenting }}</td>
-        <td class="px-4 py-3 text-ms font-semibold border">{{ renting.endRenting }}</td>
+        <td class="px-4 py-3 text-ms font-semibold border">
+          {{ formatDate(renting.beginRenting) }}
+        </td>
+        <td class="px-4 py-3 text-ms font-semibold border">{{ formatDate(renting.endRenting) }}</td>
         <td class="px-4 py-3 text-ms font-semibold border">
           {{ renting.status ? 'Alugado' : 'Entregue' }}
         </td>
@@ -97,6 +99,11 @@ onMounted(() => {
     rentings.value = rentingsStorage.value ? (JSON.parse(rentingsStorage.value) as MovieRent[]) : []
   }
 })
+
+const formatDate = (date: Date): string => {
+  const formatedDate = new Date(date)
+  return formatedDate.toLocaleDateString()
+}
 
 const toggleStatus = (renting: MovieRent): void => {
   renting.status = !renting.status
