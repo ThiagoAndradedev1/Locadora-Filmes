@@ -16,61 +16,61 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       meta: { requiresAuth: false },
-      component: () => import('../views/RegisterView.vue')
+      component: () => import('../pages/RegisterView.vue')
     },
     {
       path: '/login',
       name: 'login',
       meta: { requiresAuth: false },
-      component: () => import('../views/LoginView.vue')
+      component: () => import('../pages/LoginView.vue')
     },
     {
       path: '/users',
       name: ROUTES.USERS,
       meta: { requiresAuth: true },
-      component: () => import('../views/UsersView.vue')
+      component: () => import('../pages/UsersView.vue')
     },
     {
       path: '/movies-renting',
       name: ROUTES.MOVIES_RENTING,
       meta: { requiresAuth: true },
-      component: () => import('../views/MovieRentingView.vue')
+      component: () => import('../pages/MovieRentingView.vue')
     },
     {
       path: '/movies-renting-list',
       name: ROUTES.MOVIES_RENTING_LIST,
       meta: { requiresAuth: true },
-      component: () => import('../views/MovieRentingListView.vue')
+      component: () => import('../pages/MovieRentingListView.vue')
     },
     {
       path: '/movies',
       name: ROUTES.MOVIES,
       meta: { requiresAuth: true },
-      component: () => import('../views/MoviesListView.vue')
+      component: () => import('../pages/MoviesListView.vue')
     },
     {
       path: '/clients',
       name: ROUTES.CLIENTS,
       meta: { requiresAuth: true },
-      component: () => import('../views/ClientslistView.vue')
+      component: () => import('../pages/ClientslistView.vue')
     },
     {
       path: '/edit-client/:id',
       name: ROUTES.EDIT_CLIENT,
       meta: { requiresAuth: true },
-      component: () => import('../views/EditClientView.vue')
+      component: () => import('../pages/EditClientView.vue')
     },
     {
       path: '/register-client',
       name: ROUTES.REGISTER_CLIENT,
       meta: { requiresAuth: true },
-      component: () => import('../views/RegisterclientView.vue')
+      component: () => import('../pages/RegisterclientView.vue')
     },
     {
       path: '/edit-user/:id',
       name: ROUTES.EDIT_USER,
       meta: { requiresAuth: true },
-      component: () => import('../views/EdituserView.vue')
+      component: () => import('../pages/EdituserView.vue')
     }
   ]
 })

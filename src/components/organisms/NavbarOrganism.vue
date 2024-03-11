@@ -9,7 +9,9 @@
         class="text-2xl no-underline text-grey-darkest hover:text-blue-dark font-sans font-bold"
         >Locadora Filmes 🍿</RouterLink
       ><br />
-      <span class="text-xs text-grey-dark">Olá, {{ loggedInUser?.name }}!</span>
+      <span class="text-xs text-grey-dark"
+        >Olá, {{ loggedInUser ? loggedInUser.name : 'Usuário' }}!</span
+      >
     </div>
 
     <div class="flex flex-wrap justify-center md:justify-end">
