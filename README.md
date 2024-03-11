@@ -1,52 +1,69 @@
-# locadora-filmes
+<div align="center">
 
-This template should help get you started developing with Vue 3 in Vite.
+# Locadora de Filmes 💰
 
-## Recommended IDE Setup
+### Uma aplicação de locação de filmes
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Projeto online
 
-## Type Support for `.vue` Imports in TS
+<a href="https://locadora-filmes.vercel.app">Disponível aqui. <a/>
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+## Como rodar o projeto
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+```bash
+npm run install
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
+```bash
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+## Como configurar o env do projeto
 
-```sh
-npm run build
+<h3>Primeiramente deve ser criado o arquivo env na raiz do projeto, após fazer isso, é preciso colocar as seguintes chaves:</h3>
+
+```bash
+VITE_API_KEY="SUA_CHAVE"
+VITE_API_BASE_URL="URL_API"
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+<h3>É preciso gerar uma key no <a href="https://www.omdbapi.com/apikey.aspx">OMDb API<a/>. Após gerar a key, coloque ela no env:</h3>
 
-```sh
+```bash
+VITE_API_KEY="SUA_CHAVE"
+```
+
+## Como rodar os testes unitários
+
+```bash
 npm run test:unit
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## Como rodar o container Docker
 
-```sh
-npm run lint
+```bash
+docker build -t locadora-filmes/vuejs-app .
 ```
+
+```bash
+docker run -it -p 8080:80 --rm --name locadora-filmes locadora-filmes/vuejs-app
+```
+
+## Features
+
+<div align="left">
+
+- Utilização do Tailwind na estilização de todo o projeto
+- Implementação de um sistema de autenticação (login/logout)
+- Implementação de rota privada
+- Utilização do vitest para a implementação dos testes unitários da aplicação
+- Utilização do Pinia para o gerenciamento de estado
+- Utilização do VeeValidate + yup na validação de formulário
+- Utilização do padrão do Atomic Design
+- Utilização do Docker
+- Implementação de componentização e responsividade nas versões web e mobile
+- Utilização de Typescript
+- Implementação de todo fluxo de usuários, clientes e locação
+- Implementação de listagem e filtro/pesquisas de filmes
+
+</div>
