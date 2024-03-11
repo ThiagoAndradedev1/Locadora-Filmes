@@ -108,7 +108,7 @@ const searchMovies = async () => {
   loading.value = true
   searched.value = true
   const apiKey = import.meta.env.VITE_API_KEY
-  const baseUrl = `http://www.omdbapi.com/?apikey=${apiKey}&type=movie&plot=short`
+  const baseUrl = `${import.meta.env.VITE_API_BASE_URL}/?apikey=${apiKey}&type=movie&plot=short`
 
   let url = baseUrl
 
