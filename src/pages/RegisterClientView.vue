@@ -199,6 +199,8 @@ import { toTypedSchema } from '@vee-validate/yup'
 import { watch } from 'vue'
 import type { Client } from '@/data/models/Client.model'
 import { push } from 'notivue'
+import { useRouter } from 'vue-router'
+import { ROUTES } from '@/consts/route-utils'
 
 const { handleSubmit, defineField, errors, setValues } = useForm({
   validationSchema: toTypedSchema(
@@ -254,6 +256,8 @@ const [bairro, bairroAttrs] = defineField('bairro')
 const [cidade, cidadeAttrs] = defineField('cidade')
 const [uf, ufAttrs] = defineField('uf')
 
+const router = useRouter()
+
 const findAddress = async () => {
   if (cep.value?.length === 9) {
     try {
@@ -268,6 +272,7 @@ const findAddress = async () => {
         })
       }
     } catch (error) {
+      push.error('Erro ao buscar endereço!')
       console.error('Erro ao buscar endereço:', error)
     }
   }
@@ -311,6 +316,8 @@ const onSubmit = handleSubmit(
     localStorage.setItem('clients', JSON.stringify(currentClients))
 
     push.success('Cliente registrado com sucesso!')
+
+    router.push(ROUTES.CLIENTS)
   }
 )
 
