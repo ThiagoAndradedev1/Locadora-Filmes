@@ -52,7 +52,7 @@ const router = createRouter({
       path: '/clients',
       name: ROUTES.CLIENTS,
       meta: { requiresAuth: true },
-      component: () => import('../pages/ClientslistView.vue')
+      component: () => import('../pages/ClientsListView.vue')
     },
     {
       path: '/edit-client/:id',
@@ -64,13 +64,13 @@ const router = createRouter({
       path: '/register-client',
       name: ROUTES.REGISTER_CLIENT,
       meta: { requiresAuth: true },
-      component: () => import('../pages/RegisterclientView.vue')
+      component: () => import('../pages/RegisterClientView.vue')
     },
     {
       path: '/edit-user/:id',
       name: ROUTES.EDIT_USER,
       meta: { requiresAuth: true },
-      component: () => import('../pages/EdituserView.vue')
+      component: () => import('../pages/EditUserView.vue')
     }
   ]
 })
