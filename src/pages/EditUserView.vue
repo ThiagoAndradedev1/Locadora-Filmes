@@ -91,7 +91,7 @@ import { useForm } from 'vee-validate'
 import { boolean, object, string } from 'yup'
 import { toTypedSchema } from '@vee-validate/yup'
 import type { User } from '@/data/models/User.model'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { getAll, getById, set } from '@/utils/storage-utils'
 import { ROUTES } from '@/consts/route-utils'
@@ -107,8 +107,10 @@ const { handleSubmit, defineField, errors, setValues } = useForm({
         .min(4, 'A senha deve ter pelo menos 4 caracteres')
         .required('O campo password é obrigatório'),
       document: string()
-        .min(11, 'O CPF deve ter 11 digitos')
-        .max(11, 'O CPF deve ter 11 digitos')
+        .matches(
+          /^\d{3}\.\d{3}\.\d{3}-\d{2}$/,
+          'O CPF deve estar no formato correto (XXX.XXX.XXX-XX)'
+        )
         .required('O campo CPF é obrigatório'),
       status: boolean().required()
     })
@@ -123,7 +125,7 @@ const [status, statusAttrs] = defineField('status')
 const router = useRouter()
 const userId = ref<number>(0)
 
-const retrieveUser = () => {
+const retrieveUser = (): void => {
   const usersStorage = getAll<User[]>('users')
 
   if (!usersStorage) {
@@ -162,12 +164,20 @@ const onSubmit = handleSubmit(({ name, password, document, status }) => {
 
   if (foundUserIndex !== -1) {
     const id = usersStorage[foundUserIndex].id
-    const editedUser = { id, name, password, document, status }
+    const cleanedCPF = document.replace(/\D/g, '')
+    const editedUser = { id, name, password, document: cleanedCPF, status }
     usersStorage.splice(foundUserIndex, 1, editedUser)
     set<User[]>('users', usersStorage)
 
     router.push(`../${ROUTES.USERS}`)
     push.success('Usuário editado com sucesso!')
+  }
+})
+
+watch(document, () => {
+  if (document.value) {
+    const cleanedCPF = document.value.replace(/\D/g, '')
+    document.value = cleanedCPF.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')
   }
 })
 </script>

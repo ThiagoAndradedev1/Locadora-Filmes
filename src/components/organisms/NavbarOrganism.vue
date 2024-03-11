@@ -10,7 +10,7 @@
         >Locadora Filmes 🍿</RouterLink
       ><br />
       <span class="text-xs text-grey-dark"
-        >Olá, {{ loggedInUser ? loggedInUser.name : 'Usuário' }}!</span
+        >{{ loggedInUser ? `Olá, ${loggedInUser.name}!` : 'Bem vindo!' }}!</span
       >
     </div>
 

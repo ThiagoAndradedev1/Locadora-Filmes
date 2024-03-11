@@ -202,6 +202,7 @@ import { useRouter } from 'vue-router'
 import { getAll, set } from '@/utils/storage-utils'
 import { push } from 'notivue'
 import { ROUTES } from '@/consts/route-utils'
+import type { MovieRent } from '@/data/models/MovieRent'
 
 const { handleSubmit, defineField, errors, setValues } = useForm({
   validationSchema: toTypedSchema(
@@ -317,6 +318,7 @@ const findAddress = async () => {
 const onSubmit = handleSubmit(
   ({ name, surname, cpf, email, cellphone, cep, logradouro, bairro, cidade, uf }) => {
     const clientsStorage = getAll<Client[]>('clients')
+    const rentingsStorage = getAll<MovieRent[]>('rentings')
 
     if (!clientsStorage) {
       return
@@ -326,13 +328,24 @@ const onSubmit = handleSubmit(
       (client: Client) => client.id.toString() === userId.value.toString()
     )
 
+    if (rentingsStorage) {
+      const updatedRentings = rentingsStorage.map((renting) => {
+        if (renting.clientId.toString() === userId.value.toString()) {
+          return { ...renting, clientName: name }
+        }
+        return renting
+      })
+      set('rentings', updatedRentings)
+    }
+
     if (foundClientIndex !== -1) {
       const id = clientsStorage[foundClientIndex].id
+      const cleanedCPF = cpf.replace(/\D/g, '')
       const editedClient: Client = {
         id: id,
         nome: name,
         sobrenome: surname,
-        cpf,
+        cpf: cleanedCPF,
         contatos: {
           email,
           celular: cellphone

@@ -127,8 +127,6 @@ onMounted(() => {
 
 const clientsFiltered = computed(() => {
   return clientsList.value.filter((client) => {
-    console.log(client.cpf)
-    console.log(findDocument.value)
     const nameMatches = client.nome.toLowerCase().includes(findName.value.toLowerCase())
     const documentMatches = client.cpf.includes(findDocument.value)
     const statusMatches = filterStatus.value === '' || String(client.status) === filterStatus.value
