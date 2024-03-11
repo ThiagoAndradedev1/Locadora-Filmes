@@ -24,7 +24,9 @@ npm run dev
 
 ```bash
 VITE_API_KEY="SUA_CHAVE"
+```
 
+```bash
 VITE_API_BASE_URL="URL_API"
 ```
 
