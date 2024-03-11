@@ -1,6 +1,6 @@
 <div align="center">
 
-# Locadora de Filmes 💰
+# Locadora de Filmes 🍿
 
 ### Uma aplicação de locação de filmes
 
