@@ -65,15 +65,20 @@
         </td>
         <td class="px-4 py-3 text-ms font-semibold border">{{ formatDate(renting.endRenting) }}</td>
         <td class="px-4 py-3 text-ms font-semibold border">
-          {{ renting.status ? 'Alugado' : 'Entregue' }}
+          <BadgeAtom
+            :label="renting.status ? 'Alugado' : 'Entregue'"
+            :severity="renting.status ? 'success' : 'error'"
+          />
         </td>
         <td class="px-4 py-3 text-sm border">
           <div class="flex gap-2">
             <ButtonAtom
-              :label="renting.status ? 'Alugado' : 'Entregue'"
+              v-if="renting.status"
+              label="Devolver"
               :disabled="false"
               :on-pressed="() => toggleStatus(renting)"
             />
+            <ButtonAtom v-if="!renting.status" label="Devolvido" :disabled="true" />
           </div>
         </td>
       </tr>
@@ -86,6 +91,7 @@ import { computed, onMounted, ref } from 'vue'
 import type { MovieRent } from '@/data/models/MovieRent'
 import FullTableMolecule from '@/components/molecules/FullTableMolecule.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
+import BadgeAtom from '@/components/atoms/BadgeAtom.vue'
 
 const filterName = ref<string>('')
 const filterBeginRenting = ref<string>('')
