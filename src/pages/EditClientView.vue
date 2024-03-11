@@ -201,7 +201,7 @@ import type { Client } from '@/data/models/Client.model'
 import { useRouter } from 'vue-router'
 import { getAll, set } from '@/utils/storage-utils'
 import { push } from 'notivue'
-import { ROUTES } from '@/utils/route-utils'
+import { ROUTES } from '@/consts/route-utils'
 
 const { handleSubmit, defineField, errors, setValues } = useForm({
   validationSchema: toTypedSchema(

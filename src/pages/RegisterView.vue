@@ -82,7 +82,7 @@ import { object, string } from 'yup'
 import { toTypedSchema } from '@vee-validate/yup'
 import type { User } from '@/data/models/User.model'
 import { useRouter } from 'vue-router'
-import { ROUTES } from '@/utils/route-utils'
+import { ROUTES } from '@/consts/route-utils'
 import { push } from 'notivue'
 import { watch } from 'vue'
 

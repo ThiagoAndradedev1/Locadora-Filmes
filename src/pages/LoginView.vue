@@ -67,10 +67,10 @@ import { toTypedSchema } from '@vee-validate/yup'
 import type { User } from '@/data/models/User.model'
 import { useRouter } from 'vue-router'
 import { getAll, set } from '@/utils/storage-utils'
-import { ROUTES } from '@/utils/route-utils'
 
 import { push } from 'notivue'
 import { watch } from 'vue'
+import { ROUTES } from '@/consts/route-utils'
 
 const { handleSubmit, defineField, errors } = useForm({
   validationSchema: toTypedSchema(

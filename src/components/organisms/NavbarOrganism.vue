@@ -45,8 +45,8 @@
 </template>
 
 <script setup lang="ts">
+import { ROUTES } from '@/consts/route-utils'
 import type { User } from '@/data/models/User.model'
-import { ROUTES } from '@/utils/route-utils'
 import { getAll, remove } from '@/utils/storage-utils'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'

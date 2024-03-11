@@ -94,7 +94,7 @@ import type { User } from '@/data/models/User.model'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { getAll, getById, set } from '@/utils/storage-utils'
-import { ROUTES } from '@/utils/route-utils'
+import { ROUTES } from '@/consts/route-utils'
 import { push } from 'notivue'
 
 const { handleSubmit, defineField, errors, setValues } = useForm({

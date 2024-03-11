@@ -92,7 +92,7 @@ import { useRouter } from 'vue-router'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import FullTableMolecule from '@/components/molecules/FullTableMolecule.vue'
 import { useMovieStore } from '@/stores/movies'
-import { ROUTES } from '@/utils/route-utils'
+import { ROUTES } from '@/consts/route-utils'
 
 const movieStore = useMovieStore()
 

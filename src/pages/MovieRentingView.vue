@@ -98,7 +98,7 @@ import type { Client } from '@/data/models/Client.model'
 import { onMounted, ref } from 'vue'
 import { getAll, set } from '@/utils/storage-utils'
 import { useRouter } from 'vue-router'
-import { ROUTES } from '@/utils/route-utils'
+import { ROUTES } from '@/consts/route-utils'
 
 import { push } from 'notivue'
 
